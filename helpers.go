@@ -9,7 +9,6 @@ import (
 	"net/url"
 	"path"
 	"runtime"
-	"strings"
 	"time"
 
 	"github.com/mr-tron/base58/base58"
@@ -50,13 +49,8 @@ func sendAsset(amount uint64, assetId string, recipient string, attachment strin
 	var nodeURL string
 	// var assetBytes []byte
 
-	if strings.HasPrefix(recipient, "3A") {
-		networkByte = 55
-		nodeURL = AnoteNodeURL
-	} else {
-		networkByte = proto.MainNetScheme
-		nodeURL = WavesNodeURL
-	}
+	networkByte = 55
+	nodeURL = AnoteNodeURL
 
 	// Create sender's public key from BASE58 string
 	sender, err := crypto.NewPublicKeyFromBase58(conf.PublicKey)

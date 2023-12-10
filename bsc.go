@@ -120,7 +120,7 @@ func initBsc() {
 								// log.Println(block.Time())
 								// log.Println(mon.StartedTime)
 								if len(addr) > 0 && amount > 0 && strings.HasPrefix(addr, "3A") {
-									err := sendAsset(amount, "", addr, t.Hash().String())
+									err := sendAsset(amount, NodeTokenId, addr, t.Hash().String())
 									if err == nil {
 										done := true
 										dataTransaction(key, nil, nil, &done)

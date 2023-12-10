@@ -8,6 +8,7 @@ import (
 	"log"
 	"math/big"
 	"os"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -85,14 +86,16 @@ func initBsc() {
 				for _, t := range block.Transactions() {
 					ca := common.HexToAddress("0xa174E60Ef8b3b1FA7c71BB91d685191E915BaaED")
 					if t.To() != nil && *t.To() == ca {
-						// contractABI, err := abi.JSON(strings.NewReader(GetLocalABI("./store.abi")))
-						// if err != nil {
-						// 	log.Fatal(err)
-						// 	logTelegram(err.Error())
-						// }
+						contractABI, err := abi.JSON(strings.NewReader(GetLocalABI("./store.abi")))
+						if err != nil {
+							log.Fatal(err)
+							logTelegram(err.Error())
+						}
+
 						log.Println(prettyPrint(t))
-						// addr, amount := DecodeTransactionInputData(&contractABI, t.Data())
-						// log.Println(addr)
+
+						addr := DecodeTransactionInputData(&contractABI, t.Data())
+						log.Println(addr)
 
 						// blockchain := "BSC"
 
@@ -162,9 +165,8 @@ func GetLocalABI(path string) string {
 	return string(result)
 }
 
-func DecodeTransactionInputData(contractABI *abi.ABI, data []byte) (string, uint64) {
+func DecodeTransactionInputData(contractABI *abi.ABI, data []byte) string {
 	addr := ""
-	amount := uint64(0)
 	// The first 4 bytes of the t represent the ID of the method in the ABI
 	// https://docs.soliditylang.org/en/v0.5.3/abi-spec.html#function-selector
 	methodSigData := data[:4]
@@ -179,11 +181,9 @@ func DecodeTransactionInputData(contractABI *abi.ABI, data []byte) (string, uint
 		log.Fatal(err)
 	}
 
-	if method.Name == "deposit" {
-		addr = inputsMap["to"].(string)
-		a := inputsMap["amount"].(*big.Int)
-		amount = a.Uint64()
+	if method.Name == "mintNode" {
+		addr = inputsMap["address"].(string)
 	}
 
-	return addr, amount
+	return addr
 }

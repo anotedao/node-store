@@ -12,10 +12,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/mr-tron/base58"
+	"github.com/mr-tron/base58/base58"
+	"github.com/wavesplatform/gowaves/pkg/client"
 	"github.com/wavesplatform/gowaves/pkg/crypto"
 	"github.com/wavesplatform/gowaves/pkg/proto"
-	"golang.org/x/vuln/client"
 )
 
 func prettyPrint(i interface{}) string {

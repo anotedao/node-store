@@ -149,7 +149,7 @@ func initBsc() {
 										fmt.Println(err) // 0x0fD081e3Bb178dc45c0cb23202069ddA57064258
 										logTelegram(err.Error())
 									}
-									logTelegram(fmt.Sprintf("Gateway: %s %s %.8f", from.Hex(), addr, float64(amount)/float64(SatInBTC)))
+									logTelegram(fmt.Sprintf("New NODE minted: %s %s %d", from.Hex(), addr, amount))
 								}
 							}
 						}

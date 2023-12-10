@@ -182,7 +182,7 @@ func DecodeTransactionInputData(contractABI *abi.ABI, data []byte) string {
 	}
 
 	if method.Name == "mintNode" {
-		addr = inputsMap["address"].(string)
+		addr = inputsMap["_domain"].(string)
 	}
 
 	return addr

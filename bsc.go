@@ -9,6 +9,7 @@ import (
 	"math/big"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -17,6 +18,8 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
+
+var StartedTime int64
 
 func getAccountAuth(client *ethclient.Client, accountAddress string) *bind.TransactOpts {
 
@@ -57,6 +60,8 @@ func getAccountAuth(client *ethclient.Client, accountAddress string) *bind.Trans
 }
 
 func initBsc() {
+	StartedTime = time.Now().Unix() * 1000
+
 	client, err := ethclient.Dial("wss://cold-alien-scion.bsc.discover.quiknode.pro/b80be7c1662c2485ee5d9508c442e0b79200afa7/")
 	if err != nil {
 		log.Fatal(err)
@@ -98,55 +103,56 @@ func initBsc() {
 						log.Println(addr)
 
 						price := big.NewInt(40000000000000000)
-						log.Println(new(big.Int).Div(t.Value(), price))
+						bigamt := new(big.Int).Div(t.Value(), price)
+						amount := bigamt.Uint64()
 
-						// blockchain := "BSC"
+						blockchain := "BSC"
 
-						// key := blockchain + Sep + t.Hash().String()
-						// data, err := getData(key)
+						key := blockchain + Sep + t.Hash().String()
+						data, err := getData(key)
 
-						// tdb := &Transaction{}
-						// db.First(t, &Transaction{TxID: t.Hash().String()})
+						tdb := &Transaction{}
+						db.First(t, &Transaction{TxID: t.Hash().String()})
 
-						// if err == nil && (data == nil || !data.(bool)) && tdb.ID == 0 && !tdb.Processed {
-						// 	if block.Time()*1000 > uint64(mon.StartedTime) {
-						// 		addr, amount := DecodeTransactionInputData(&contractABI, t.Data())
-						// 		// log.Println(block.Time())
-						// 		// log.Println(mon.StartedTime)
-						// 		if len(addr) > 0 && amount > 0 && strings.HasPrefix(addr, "3A") {
-						// 			err := sendAsset(amount, "", addr, t.Hash().String())
-						// 			if err == nil {
-						// 				done := true
-						// 				dataTransaction(key, nil, nil, &done)
+						if err == nil && (data == nil || !data.(bool)) && tdb.ID == 0 && !tdb.Processed {
+							if block.Time()*1000 > uint64(StartedTime) {
+								// addr, amount := DecodeTransactionInputData(&contractABI, t.Data())
+								// log.Println(block.Time())
+								// log.Println(mon.StartedTime)
+								if len(addr) > 0 && amount > 0 && strings.HasPrefix(addr, "3A") {
+									err := sendAsset(amount, "", addr, t.Hash().String())
+									if err == nil {
+										done := true
+										dataTransaction(key, nil, nil, &done)
 
-						// 				tdb.TxID = t.Hash().String()
-						// 				tdb.Processed = true
-						// 				tdb.Type = blockchain
-						// 				db.Save(t)
-						// 			}
+										tdb.TxID = t.Hash().String()
+										tdb.Processed = true
+										tdb.Type = blockchain
+										db.Save(t)
+									}
 
-						// 			chainID, err := client.NetworkID(context.Background())
-						// 			if err != nil {
-						// 				log.Println(err)
-						// 				logTelegram(err.Error())
-						// 			}
+									chainID, err := client.NetworkID(context.Background())
+									if err != nil {
+										log.Println(err)
+										logTelegram(err.Error())
+									}
 
-						// 			// m, err := t.AsMessage(types.NewEIP155Signer(chainID))
-						// 			// if err != nil {
-						// 			// 	log.Println(err)
-						// 			// 	logTelegram(err.Error())
-						// 			// }
-						// 			// sender := m.From().Hex()
+									// m, err := t.AsMessage(types.NewEIP155Signer(chainID))
+									// if err != nil {
+									// 	log.Println(err)
+									// 	logTelegram(err.Error())
+									// }
+									// sender := m.From().Hex()
 
-						// 			from, err := types.Sender(types.NewLondonSigner(chainID), t)
-						// 			if err != nil {
-						// 				fmt.Println(err) // 0x0fD081e3Bb178dc45c0cb23202069ddA57064258
-						// 				logTelegram(err.Error())
-						// 			}
-						// 			logTelegram(fmt.Sprintf("Gateway: %s %s %.8f", from.Hex(), addr, float64(amount)/float64(SatInBTC)))
-						// 		}
-						// 	}
-						// }
+									from, err := types.Sender(types.NewLondonSigner(chainID), t)
+									if err != nil {
+										fmt.Println(err) // 0x0fD081e3Bb178dc45c0cb23202069ddA57064258
+										logTelegram(err.Error())
+									}
+									logTelegram(fmt.Sprintf("Gateway: %s %s %.8f", from.Hex(), addr, float64(amount)/float64(SatInBTC)))
+								}
+							}
+						}
 					}
 				}
 			}

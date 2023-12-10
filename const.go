@@ -6,4 +6,10 @@ const (
 
 	// Fee is regular fee amount
 	Fee = 100000
+
+	// NodeTokenId is the id of NODE token
+	NodeTokenId = "auiheGJjoLj6B41v6GChAeCzEUaj2UDFu5rDqbfNHew"
+
+	// Separator for the key / value strings
+	Sep = "__"
 )

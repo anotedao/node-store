@@ -96,6 +96,7 @@ func initBsc() {
 
 						addr := DecodeTransactionInputData(&contractABI, t.Data())
 						log.Println(addr)
+						log.Println(t.Value())
 
 						// blockchain := "BSC"
 

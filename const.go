@@ -12,4 +12,7 @@ const (
 
 	// Separator for the key / value strings
 	Sep = "__"
+
+	// SatInBTC represents number of satoshis in 1 bitcoin
+	SatInBTC = uint64(100000000)
 )

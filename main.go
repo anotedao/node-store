@@ -16,4 +16,6 @@ func main() {
 	conf = initConfig()
 
 	db = initDb()
+
+	initBsc()
 }

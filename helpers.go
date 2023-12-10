@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -8,6 +9,13 @@ import (
 	"net/url"
 	"path"
 	"runtime"
+	"strings"
+	"time"
+
+	"github.com/mr-tron/base58"
+	"github.com/wavesplatform/gowaves/pkg/crypto"
+	"github.com/wavesplatform/gowaves/pkg/proto"
+	"golang.org/x/vuln/client"
 )
 
 func prettyPrint(i interface{}) string {
@@ -35,4 +43,96 @@ func logTelegram(message string) {
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+func sendAsset(amount uint64, assetId string, recipient string, attachment string) error {
+	var networkByte byte
+	var nodeURL string
+	// var assetBytes []byte
+
+	if strings.HasPrefix(recipient, "3A") {
+		networkByte = 55
+		nodeURL = AnoteNodeURL
+	} else {
+		networkByte = proto.MainNetScheme
+		nodeURL = WavesNodeURL
+	}
+
+	// Create sender's public key from BASE58 string
+	sender, err := crypto.NewPublicKeyFromBase58(conf.PublicKey)
+	if err != nil {
+		log.Println(err)
+		logTelegram(err.Error())
+		return err
+	}
+
+	// Create sender's private key from BASE58 string
+	sk, err := crypto.NewSecretKeyFromBase58(conf.PrivateKey)
+	if err != nil {
+		log.Println(err)
+		logTelegram(err.Error())
+		return err
+	}
+
+	// Current time in milliseconds
+	ts := time.Now().Unix() * 1000
+
+	asset, err := proto.NewOptionalAssetFromString(assetId)
+	if err != nil {
+		log.Println(err)
+		logTelegram(err.Error())
+		return err
+	}
+
+	assetW, err := proto.NewOptionalAssetFromString("")
+	if err != nil {
+		log.Println(err)
+		logTelegram(err.Error())
+		return err
+	}
+
+	rec, err := proto.NewRecipientFromString(recipient)
+	if err != nil {
+		log.Println(err)
+		logTelegram(err.Error())
+		return err
+	}
+
+	att, err := proto.NewAttachmentFromBase58(base58.Encode([]byte(attachment)))
+	if err != nil {
+		log.Println(err)
+		logTelegram(err.Error())
+		return err
+	}
+
+	tr := proto.NewUnsignedTransferWithSig(sender, *asset, *assetW, uint64(ts), amount, Fee, rec, att)
+
+	err = tr.Sign(networkByte, sk)
+	if err != nil {
+		log.Println(err)
+		logTelegram(err.Error())
+		return err
+	}
+
+	// Create new HTTP client to send the transaction to public TestNet nodes
+	client, err := client.NewClient(client.Options{BaseUrl: nodeURL, Client: &http.Client{}})
+	if err != nil {
+		log.Println(err)
+		logTelegram(err.Error())
+		return err
+	}
+
+	// Context to cancel the request execution on timeout
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
+
+	// // Send the transaction to the network
+	_, err = client.Transactions.Broadcast(ctx, tr)
+	if err != nil {
+		log.Println(err)
+		logTelegram(err.Error())
+		return err
+	}
+
+	return nil
 }

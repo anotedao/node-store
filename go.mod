@@ -6,7 +6,7 @@ require (
 	github.com/anonutopia/gowaves v1.0.27
 	github.com/ethereum/go-ethereum v1.13.5
 	github.com/mr-tron/base58 v1.2.0
-	github.com/wavesplatform/gowaves v0.10.0
+	github.com/wavesplatform/gowaves v0.10.1
 	gorm.io/driver/sqlite v1.5.4
 	gorm.io/gorm v1.25.5
 )

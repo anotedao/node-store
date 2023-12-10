@@ -1,9 +1,19 @@
 package main
 
-import "log"
+import (
+	"log"
+
+	"gorm.io/gorm"
+)
+
+var conf *Config
+
+var db *gorm.DB
 
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
-	log.Println("fdsfsda")
+	conf = initConfig()
+
+	db = initDb()
 }

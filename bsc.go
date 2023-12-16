@@ -102,9 +102,25 @@ func initBsc() {
 						addr := DecodeTransactionInputData(&contractABI, t.Data())
 						log.Println(addr)
 
-						price := big.NewInt(40000000000000000)
+						pricedb, err := getData("%s__nodePrice")
+						if err != nil {
+							log.Fatal(err)
+							logTelegram(err.Error())
+						}
+
+						tierdb, err := getData("%s__nodeTier")
+						if err != nil {
+							log.Fatal(err)
+							logTelegram(err.Error())
+						}
+
+						price := new(big.Int).Mul(big.NewInt(10000000000000000), big.NewInt(pricedb.(int64)))
 						bigamt := new(big.Int).Div(t.Value(), price)
 						amount := bigamt.Uint64()
+
+						if amount > tierdb.(uint64) {
+							amount = tierdb.(uint64)
+						}
 
 						blockchain := "BSC"
 

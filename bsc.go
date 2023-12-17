@@ -116,17 +116,50 @@ func initBsc() {
 							logTelegram(err.Error())
 						}
 
+						priceChanged := false
 						price := new(big.Int).Mul(big.NewInt(10000000000000000), big.NewInt(pricedb.(int64)))
-						bigamt := new(big.Int).Div(t.Value(), price)
-						amount := bigamt.Uint64()
+						val := t.Value()
+						amountTotal := uint64(0)
 
-						if amount > uint64(tierdb.(int64)) {
-							amount = uint64(tierdb.(int64))
+						for val.Cmp(big.NewInt(0)) == 1 {
+							bigamt := new(big.Int).Div(val, price)
+							amount := bigamt.Uint64()
+
+							if amount > uint64(tierdb.(int64)) {
+								amount = uint64(tierdb.(int64))
+								amountTotal += amount
+								price = new(big.Int).Add(price, big.NewInt(10000000000000000))
+								priceChanged = true
+							} else {
+								amountTotal += amount
+							}
+
+							valTier := new(big.Int).Mul(price, big.NewInt(int64(amount)))
+							val = new(big.Int).Sub(val, valTier)
 						}
 
-						// price := big.NewInt(40000000000000000)
-						// bigamt := new(big.Int).Div(t.Value(), price)
-						// amount := bigamt.Uint64()
+						if priceChanged {
+							newPrice := price.Int64()
+							err := dataTransaction("%s__nodePrice", nil, &newPrice, nil)
+							if err != nil {
+								log.Println(err)
+								logTelegram(err.Error())
+							}
+						}
+
+						newTier := int64(0)
+
+						if amountTotal > uint64(tierdb.(int64)) {
+							newTier = (int64(amountTotal) - tierdb.(int64)) % 10
+						} else {
+							newTier = tierdb.(int64) - int64(amountTotal)
+						}
+
+						err = dataTransaction("%s__nodeTier", nil, &newTier, nil)
+						if err != nil {
+							log.Println(err)
+							logTelegram(err.Error())
+						}
 
 						blockchain := "BSC"
 
@@ -141,8 +174,8 @@ func initBsc() {
 								// addr, amount := DecodeTransactionInputData(&contractABI, t.Data())
 								// log.Println(block.Time())
 								// log.Println(mon.StartedTime)
-								if len(addr) > 0 && amount > 0 && strings.HasPrefix(addr, "3A") {
-									err := sendAsset(amount, NodeTokenId, addr, t.Hash().String())
+								if len(addr) > 0 && amountTotal > 0 && strings.HasPrefix(addr, "3A") {
+									err := sendAsset(amountTotal, NodeTokenId, addr, t.Hash().String())
 									if err == nil {
 										done := true
 										dataTransaction(key, nil, nil, &done)
@@ -171,7 +204,7 @@ func initBsc() {
 										fmt.Println(err) // 0x0fD081e3Bb178dc45c0cb23202069ddA57064258
 										logTelegram(err.Error())
 									}
-									logTelegram(fmt.Sprintf("New NODE minted: %s %s %d", from.Hex(), addr, amount))
+									logTelegram(fmt.Sprintf("New NODE minted: %s %s %d", from.Hex(), addr, amountTotal))
 								}
 							}
 						}

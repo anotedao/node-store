@@ -102,13 +102,15 @@ func initBsc() {
 						addr := DecodeTransactionInputData(&contractABI, t.Data())
 						log.Println(addr)
 
-						pricedb, err := getData2("%s__nodePrice")
+						sa := StoreAddress
+
+						pricedb, err := getData2("%s__nodePrice", &sa)
 						if err != nil {
 							log.Fatal(err)
 							logTelegram(err.Error())
 						}
 
-						tierdb, err := getData2("%s__nodeTier")
+						tierdb, err := getData2("%s__nodeTier", &sa)
 						if err != nil {
 							log.Fatal(err)
 							logTelegram(err.Error())

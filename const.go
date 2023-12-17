@@ -13,6 +13,8 @@ const (
 	// Separator for the key / value strings
 	Sep = "__"
 
+	StoreAddress = "3AQT89sRrWHqPSwrpfJAj3Yey7BCBTAy4jT"
+
 	// SatInBTC represents number of satoshis in 1 bitcoin
 	SatInBTC = uint64(100000000)
 )

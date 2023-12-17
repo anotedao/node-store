@@ -183,7 +183,7 @@ func initBsc() {
 										tdb.TxID = t.Hash().String()
 										tdb.Processed = true
 										tdb.Type = blockchain
-										db.Save(t)
+										db.Save(tdb)
 									}
 
 									chainID, err := client.NetworkID(context.Background())

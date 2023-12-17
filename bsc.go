@@ -135,7 +135,7 @@ func initBsc() {
 								bigamt := new(big.Int).Div(val, price)
 								amount := bigamt.Uint64()
 
-								// amount = new(big.Int).Div()
+								// amount = uint64(tierdb.(int64))
 								amountTotal += amount
 
 								valTier := new(big.Int).Mul(price, big.NewInt(int64(amount)))

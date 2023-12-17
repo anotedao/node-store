@@ -207,6 +207,8 @@ func initBsc() {
 									logTelegram(fmt.Sprintf("New NODE minted: %s %s %d", from.Hex(), addr, amountTotal))
 								}
 							}
+
+							tdb = nil
 						}
 					}
 				}

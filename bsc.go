@@ -165,7 +165,7 @@ func initBsc() {
 						newTier := int64(0)
 
 						if amountTotal > uint64(tierdb.(int64)) {
-							newTier = (int64(amountTotal) - tierdb.(int64)) % 10
+							newTier = 10 - int64(amount)
 						} else {
 							newTier = tierdb.(int64) - int64(amountTotal)
 						}

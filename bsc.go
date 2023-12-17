@@ -142,6 +142,8 @@ func initBsc() {
 									val = big.NewInt(0)
 								}
 
+								tier = new(big.Int).Div(val, price).Uint64()
+
 								log.Println(valTier.String())
 								log.Println(val.String())
 								log.Println(price.String())

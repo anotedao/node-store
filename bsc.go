@@ -157,7 +157,7 @@ func initBsc() {
 						}
 
 						if priceChanged {
-							newPrice := price.Int64()
+							newPrice := new(big.Int).Div(price, big.NewInt(10000000000000000)).Int64()
 							err := dataTransaction("%s__nodePrice", nil, &newPrice, nil)
 							if err != nil {
 								log.Println(err)

@@ -120,8 +120,8 @@ func initBsc() {
 						bigamt := new(big.Int).Div(t.Value(), price)
 						amount := bigamt.Uint64()
 
-						if amount > tierdb.(uint64) {
-							amount = tierdb.(uint64)
+						if amount > uint64(tierdb.(int64)) {
+							amount = uint64(tierdb.(int64))
 						}
 
 						// price := big.NewInt(40000000000000000)

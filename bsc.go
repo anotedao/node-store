@@ -136,6 +136,8 @@ func initBsc() {
 
 							valTier := new(big.Int).Mul(price, big.NewInt(int64(amount)))
 							val = new(big.Int).Sub(val, valTier)
+							log.Println(valTier.String())
+							log.Println(val.String())
 						}
 
 						if priceChanged {

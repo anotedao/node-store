@@ -121,25 +121,33 @@ func initBsc() {
 						val := t.Value()
 						amountTotal := uint64(0)
 
-						for val.Cmp(big.NewInt(0)) == 1 {
-							bigamt := new(big.Int).Div(val, price)
-							amount := bigamt.Uint64()
+						bigamt := new(big.Int).Div(val, price)
+						amount := bigamt.Uint64()
 
-							if amount > uint64(tierdb.(int64)) {
+						if amount > uint64(tierdb.(int64)) {
+							// amount = uint64(tierdb.(int64))
+							// amountTotal += amount
+							// price = new(big.Int).Add(price, big.NewInt(10000000000000000))
+							// priceChanged = true
+
+							for val.Cmp(big.NewInt(0)) == 1 {
+								bigamt := new(big.Int).Div(val, price)
+								amount := bigamt.Uint64()
+
 								amount = uint64(tierdb.(int64))
 								amountTotal += amount
 								price = new(big.Int).Add(price, big.NewInt(10000000000000000))
 								priceChanged = true
-							} else {
-								amountTotal += amount
-							}
 
-							valTier := new(big.Int).Mul(price, big.NewInt(int64(amount)))
-							val = new(big.Int).Sub(val, valTier)
-							log.Println(valTier.String())
-							log.Println(val.String())
-							log.Println(price.String())
-							log.Println(amount)
+								valTier := new(big.Int).Mul(price, big.NewInt(int64(amount)))
+								val = new(big.Int).Sub(val, valTier)
+								log.Println(valTier.String())
+								log.Println(val.String())
+								log.Println(price.String())
+								log.Println(amount)
+							}
+						} else {
+							amountTotal += amount
 						}
 
 						if priceChanged {

@@ -136,11 +136,17 @@ func initBsc() {
 
 								amount = uint64(tierdb.(int64))
 								amountTotal += amount
-								price = new(big.Int).Add(price, big.NewInt(10000000000000000))
-								priceChanged = true
 
 								valTier := new(big.Int).Mul(price, big.NewInt(int64(amount)))
 								val = new(big.Int).Sub(val, valTier)
+
+								if val.Cmp(big.NewInt(0)) == 1 {
+									price = new(big.Int).Add(price, big.NewInt(10000000000000000))
+									priceChanged = true
+								} else {
+									val = big.NewInt(0)
+								}
+
 								log.Println(valTier.String())
 								log.Println(val.String())
 								log.Println(price.String())

@@ -134,8 +134,6 @@ func initBsc() {
 							for val.Cmp(big.NewInt(0)) == 1 {
 								bigamt := new(big.Int).Div(val, price)
 								amount := bigamt.Uint64()
-
-								amount = uint64(tierdb.(int64))
 								amountTotal += amount
 
 								valTier := new(big.Int).Mul(price, big.NewInt(int64(amount)))

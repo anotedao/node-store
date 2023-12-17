@@ -169,6 +169,9 @@ func initBsc() {
 						tdb := &Transaction{}
 						db.First(tdb, &Transaction{TxID: t.Hash().String()})
 
+						log.Println(prettyPrint(tdb))
+						log.Println(prettyPrint(data))
+
 						if err == nil && (data == nil || !data.(bool)) && tdb.ID == 0 && !tdb.Processed {
 							if block.Time()*1000 > uint64(StartedTime) {
 								// addr, amount := DecodeTransactionInputData(&contractABI, t.Data())

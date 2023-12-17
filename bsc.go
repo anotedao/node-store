@@ -131,12 +131,14 @@ func initBsc() {
 							// price = new(big.Int).Add(price, big.NewInt(10000000000000000))
 							// priceChanged = true
 
-							for val.Cmp(big.NewInt(0)) == 1 {
+							valTier := big.NewInt(1)
+
+							for val.Cmp(big.NewInt(0)) == 1 && valTier.Cmp(big.NewInt(0)) == 1 {
 								bigamt := new(big.Int).Div(val, price)
 								amount := bigamt.Uint64()
 								amountTotal += amount
 
-								valTier := new(big.Int).Mul(price, big.NewInt(int64(amount)))
+								valTier = new(big.Int).Mul(price, big.NewInt(int64(amount)))
 								val = new(big.Int).Sub(val, valTier)
 
 								if val.Cmp(big.NewInt(0)) == 1 {

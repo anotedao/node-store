@@ -123,8 +123,9 @@ func initBsc() {
 
 						bigamt := new(big.Int).Div(val, price)
 						amount := bigamt.Uint64()
+						tier := uint64(tierdb.(int64))
 
-						if amount > uint64(tierdb.(int64)) {
+						if amount > tier {
 							// amount = uint64(tierdb.(int64))
 							// amountTotal += amount
 							// price = new(big.Int).Add(price, big.NewInt(10000000000000000))
@@ -134,7 +135,7 @@ func initBsc() {
 								bigamt := new(big.Int).Div(val, price)
 								amount := bigamt.Uint64()
 
-								amount = uint64(tierdb.(int64))
+								// amount = new(big.Int).Div()
 								amountTotal += amount
 
 								valTier := new(big.Int).Mul(price, big.NewInt(int64(amount)))
@@ -186,9 +187,6 @@ func initBsc() {
 
 						tdb := &Transaction{}
 						db.First(tdb, &Transaction{TxID: t.Hash().String()})
-
-						log.Println(prettyPrint(tdb))
-						log.Println(prettyPrint(data))
 
 						if err == nil && (data == nil || !data.(bool)) && tdb.ID == 0 && !tdb.Processed {
 							if block.Time()*1000 > uint64(StartedTime) {

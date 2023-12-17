@@ -167,7 +167,7 @@ func initBsc() {
 						data, err := getData(key)
 
 						tdb := &Transaction{}
-						db.First(t, &Transaction{TxID: t.Hash().String()})
+						db.First(tdb, &Transaction{TxID: t.Hash().String()})
 
 						if err == nil && (data == nil || !data.(bool)) && tdb.ID == 0 && !tdb.Processed {
 							if block.Time()*1000 > uint64(StartedTime) {

@@ -76,6 +76,7 @@ func initBsc() {
 	}
 
 	for {
+		time.Sleep(time.Second)
 		select {
 		case err := <-sub.Err():
 			log.Fatal(err)

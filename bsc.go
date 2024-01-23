@@ -76,7 +76,6 @@ func initBsc() {
 	}
 
 	for {
-		time.Sleep(time.Second)
 		select {
 		case err := <-sub.Err():
 			log.Fatal(err)
@@ -154,15 +153,6 @@ func initBsc() {
 							amountTotal += amount
 						}
 
-						if priceChanged {
-							newPrice := new(big.Int).Div(price, big.NewInt(10000000000000000)).Int64()
-							err := dataTransaction("%s__nodePrice", nil, &newPrice, nil)
-							if err != nil {
-								log.Println(err)
-								logTelegram(err.Error())
-							}
-						}
-
 						newTier := int64(0)
 
 						if amountTotal > uint64(tierdb.(int64)) {
@@ -171,10 +161,24 @@ func initBsc() {
 							newTier = tierdb.(int64) - int64(amountTotal)
 						}
 
+						if newTier == 0 {
+							newTier = 10
+							priceChanged = true
+						}
+
 						err = dataTransaction("%s__nodeTier", nil, &newTier, nil)
 						if err != nil {
 							log.Println(err)
 							logTelegram(err.Error())
+						}
+
+						if priceChanged {
+							newPrice := new(big.Int).Div(price, big.NewInt(10000000000000000)).Int64()
+							err := dataTransaction("%s__nodePrice", nil, &newPrice, nil)
+							if err != nil {
+								log.Println(err)
+								logTelegram(err.Error())
+							}
 						}
 
 						blockchain := "BSC"

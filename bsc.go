@@ -62,7 +62,7 @@ func getAccountAuth(client *ethclient.Client, accountAddress string) *bind.Trans
 func initBsc() {
 	StartedTime = time.Now().Unix() * 1000
 
-	client, err := ethclient.Dial("wss://cold-alien-scion.bsc.discover.quiknode.pro/b80be7c1662c2485ee5d9508c442e0b79200afa7/")
+	client, err := ethclient.Dial("wss://bsc-mainnet.core.chainstack.com/b01b27656400b69d4a783761ebc0ca80")
 	if err != nil {
 		log.Fatal(err)
 		logTelegram(err.Error())

@@ -4,7 +4,7 @@ go 1.21.0
 
 require (
 	github.com/anonutopia/gowaves v1.0.27
-	github.com/ethereum/go-ethereum v1.13.5
+	github.com/ethereum/go-ethereum v1.13.14
 	github.com/mr-tron/base58 v1.2.0
 	github.com/wavesplatform/gowaves v0.10.5
 	gorm.io/driver/sqlite v1.5.4
@@ -87,12 +87,12 @@ require (
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.26.0 // indirect
-	golang.org/x/crypto v0.16.0 // indirect
+	golang.org/x/crypto v0.17.0 // indirect
 	golang.org/x/exp v0.0.0-20231206192017-f3f8817b8deb // indirect
 	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/sync v0.5.0 // indirect
-	golang.org/x/sys v0.15.0 // indirect
+	golang.org/x/sys v0.16.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.16.0 // indirect
 	google.golang.org/genproto v0.0.0-20231120223509-83a465c0220f // indirect

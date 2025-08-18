@@ -89,7 +89,7 @@ func initBsc() {
 				logTelegram(err.Error())
 			} else {
 				for _, t := range block.Transactions() {
-					ca := common.HexToAddress("0xa174E60Ef8b3b1FA7c71BB91d685191E915BaaED")
+					ca := common.HexToAddress(contractTestnet)
 					if t.To() != nil && *t.To() == ca {
 						contractABI, err := abi.JSON(strings.NewReader(GetLocalABI("./store.abi")))
 						if err != nil {

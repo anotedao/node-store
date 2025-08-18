@@ -20,5 +20,5 @@ const (
 
 	contract = "0xa174E60Ef8b3b1FA7c71BB91d685191E915BaaED"
 
-	contractTestnet = "0xd62E0E2E25270DB6Ba98D77Dd287D275dA6aD6d6"
+	// contractTestnet = "0xd62E0E2E25270DB6Ba98D77Dd287D275dA6aD6d6"
 )

@@ -62,7 +62,7 @@ func getAccountAuth(client *ethclient.Client, accountAddress string) *bind.Trans
 func initBsc() {
 	StartedTime = time.Now().Unix() * 1000
 
-	client, err := ethclient.Dial("wss://ethereum-hoodi.core.chainstack.com/de79b63f5cf0daf51eaac8d72ff8cfe2")
+	client, err := ethclient.Dial("wss://bsc-mainnet.core.chainstack.com/8e34c936062e3b6a58d4135a76827954")
 	if err != nil {
 		log.Fatal(err)
 		logTelegram(err.Error())
@@ -89,7 +89,7 @@ func initBsc() {
 				logTelegram(err.Error())
 			} else {
 				for _, t := range block.Transactions() {
-					ca := common.HexToAddress(contractTestnet)
+					ca := common.HexToAddress(contract)
 					if t.To() != nil && *t.To() == ca {
 						contractABI, err := abi.JSON(strings.NewReader(GetLocalABI("./store.abi")))
 						if err != nil {

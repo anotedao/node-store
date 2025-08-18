@@ -85,8 +85,10 @@ func initBsc() {
 
 			block, err := client.BlockByNumber(context.Background(), header.Number)
 			if err != nil {
+				if !strings.Contains(err.Error(), "transaction type not supported") {
+					logTelegram(err.Error())
+				}
 				log.Println(err)
-				logTelegram(err.Error())
 			} else {
 				for _, t := range block.Transactions() {
 					ca := common.HexToAddress(contract)

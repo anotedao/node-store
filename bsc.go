@@ -62,7 +62,7 @@ func getAccountAuth(client *ethclient.Client, accountAddress string) *bind.Trans
 func initBsc() {
 	StartedTime = time.Now().Unix() * 1000
 
-	client, err := ethclient.Dial("wss://bsc-mainnet.core.chainstack.com/453d181efd064796a193ca08efd0fc47")
+	client, err := ethclient.Dial("wss://ethereum-hoodi.core.chainstack.com/de79b63f5cf0daf51eaac8d72ff8cfe2")
 	if err != nil {
 		log.Fatal(err)
 		logTelegram(err.Error())
@@ -156,13 +156,13 @@ func initBsc() {
 						newTier := int64(0)
 
 						if amountTotal > uint64(tierdb.(int64)) {
-							newTier = 10 - int64(amount)
+							newTier = 1000 - int64(amount)
 						} else {
 							newTier = tierdb.(int64) - int64(amountTotal)
 						}
 
 						if newTier == 0 {
-							newTier = 10
+							newTier = 10000
 							priceChanged = true
 						}
 

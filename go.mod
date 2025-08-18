@@ -4,7 +4,7 @@ go 1.21.0
 
 require (
 	github.com/anonutopia/gowaves v1.0.27
-	github.com/ethereum/go-ethereum v1.16.2
+	github.com/ethereum/go-ethereum v1.13.5
 	github.com/mr-tron/base58 v1.2.0
 	github.com/wavesplatform/gowaves v0.10.5
 	gorm.io/driver/sqlite v1.5.4

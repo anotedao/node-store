@@ -98,6 +98,12 @@ func initBsc() {
 						if err != nil {
 							log.Fatal(err)
 							logTelegram(err.Error())
+
+							contractABI, err = abi.JSON(strings.NewReader(GetLocalABI("/persistent/store.abi")))
+							if err != nil {
+								log.Println(err)
+								logTelegram(err.Error())
+							}
 						}
 
 						log.Println(prettyPrint(t))
@@ -243,13 +249,13 @@ func initBsc() {
 func GetLocalABI(path string) string {
 	abiFile, err := os.Open(path)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	defer abiFile.Close()
 
 	result, err := io.ReadAll(abiFile)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	return string(result)
 }

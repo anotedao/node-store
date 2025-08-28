@@ -19,6 +19,12 @@ func (c *Config) load(configFile string) {
 	if err != nil {
 		log.Println(err)
 		logTelegram(err.Error())
+
+		file, err = os.Open("/persistent/node-store.config.json")
+		if err != nil {
+			log.Println(err)
+			logTelegram(err.Error())
+		}
 	}
 
 	decoder := json.NewDecoder(file)

@@ -10,7 +10,7 @@ import (
 
 func initAnote() *gowaves.WavesNodeClient {
 	anc := &gowaves.WavesNodeClient{
-		Host: "http://localhost",
+		Host: "http://node-master",
 		Port: 6869,
 	}
 

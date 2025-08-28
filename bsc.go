@@ -172,7 +172,10 @@ func initBsc() {
 
 						if newTier == 0 {
 							newTier = 10
-							priceChanged = true
+							if !priceChanged {
+								price = new(big.Int).Add(price, big.NewInt(10000000000000000))
+								priceChanged = true
+							}
 						}
 
 						err = dataTransaction("%s__nodeTier", nil, &newTier, nil)

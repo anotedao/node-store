@@ -18,9 +18,13 @@ const (
 	// SatInBTC represents number of satoshis in 1 bitcoin
 	SatInBTC = uint64(100000000)
 
-	contract = "0x156b34d8D8F6a052472fe1E51FFbaBCCDb1433ac"
+	Contract = "0x156b34d8D8F6a052472fe1E51FFbaBCCDb1433ac"
+
+	ContractOwner = "0x2E0c38f2aff9692509D04cd7fdC46C3B6cd03C0B"
 
 	// contract = "0xa174E60Ef8b3b1FA7c71BB91d685191E915BaaED"
 
 	// contractTestnet = "0xd62E0E2E25270DB6Ba98D77Dd287D275dA6aD6d6"
+
+	MonitorTick = 5
 )

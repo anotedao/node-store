@@ -63,7 +63,8 @@ func initBsc() {
 	StartedTime = time.Now().Unix() * 1000
 
 	// client, err := ethclient.Dial("wss://bsc-mainnet.core.chainstack.com/8e34c936062e3b6a58d4135a76827954")
-	client, err := ethclient.Dial("wss://bsc-mainnet.core.chainstack.com/7195c648b3e44aa70a6fde92c6190e3f")
+	// client, err := ethclient.Dial("wss://bsc-mainnet.core.chainstack.com/7195c648b3e44aa70a6fde92c6190e3f")
+	client, err := ethclient.Dial("wss://bsc-mainnet.core.chainstack.com/916554e2d2df25f9f4dc8a6b35e5735f")
 	if err != nil {
 		log.Fatal(err)
 		logTelegram(err.Error())
@@ -93,7 +94,7 @@ func initBsc() {
 				log.Println(err)
 			} else {
 				for _, t := range block.Transactions() {
-					ca := common.HexToAddress(contract)
+					ca := common.HexToAddress(Contract)
 					if t.To() != nil && *t.To() == ca {
 						contractABI, err := abi.JSON(strings.NewReader(GetLocalABI("./store.abi")))
 						if err != nil {

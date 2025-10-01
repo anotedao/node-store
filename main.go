@@ -24,7 +24,7 @@ func main() {
 
 	anc = initAnote()
 
-	// price := int64(4)
+	// price := int64(35)
 	// dataTransaction("%s__nodePrice", nil, &price, nil)
 
 	// tier := int64(10)

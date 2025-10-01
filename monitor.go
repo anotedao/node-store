@@ -27,8 +27,8 @@ func (m *Monitor) monitorBsc() {
 }
 
 func (m *Monitor) checkBsc() {
-	// client, err := ethclient.Dial("wss://bsc-mainnet.core.chainstack.com/916554e2d2df25f9f4dc8a6b35e5735f")
-	client, err := ethclient.Dial("wss://ethereum-hoodi.core.chainstack.com/26c6784a0f915a9e597a418b0643ada4")
+	client, err := ethclient.Dial("wss://bsc-mainnet.core.chainstack.com/916554e2d2df25f9f4dc8a6b35e5735f")
+	// client, err := ethclient.Dial("wss://ethereum-hoodi.core.chainstack.com/26c6784a0f915a9e597a418b0643ada4")
 	if err != nil {
 		log.Println(err)
 	}
@@ -65,7 +65,7 @@ func (m *Monitor) checkBsc() {
 			log.Println(chbig.String())
 
 			for _, t := range trs {
-				ca := common.HexToAddress(ContractTestnet)
+				ca := common.HexToAddress(Contract)
 				if t.To() != nil && *t.To() == ca {
 					contractABI, err := abi.JSON(strings.NewReader(GetLocalABI("./store.abi")))
 					if err != nil {
@@ -99,7 +99,7 @@ func (m *Monitor) checkBsc() {
 					}
 
 					priceChanged := false
-					price := new(big.Int).Mul(big.NewInt(10000000000000000), big.NewInt(pricedb.(int64)))
+					price := new(big.Int).Mul(big.NewInt(1000000000000000), big.NewInt(pricedb.(int64)))
 					val := t.Value()
 					amountTotal := uint64(0)
 
@@ -118,7 +118,7 @@ func (m *Monitor) checkBsc() {
 							val = new(big.Int).Sub(val, valTier)
 
 							if val.Cmp(big.NewInt(0)) == 1 {
-								price = new(big.Int).Add(price, big.NewInt(10000000000000000))
+								price = new(big.Int).Add(price, big.NewInt(1000000000000000))
 								priceChanged = true
 							} else {
 								val = big.NewInt(0)
@@ -146,7 +146,7 @@ func (m *Monitor) checkBsc() {
 					if newTier == 0 {
 						newTier = 10
 						if !priceChanged {
-							price = new(big.Int).Add(price, big.NewInt(10000000000000000))
+							price = new(big.Int).Add(price, big.NewInt(1000000000000000))
 							priceChanged = true
 						}
 					}
@@ -158,7 +158,7 @@ func (m *Monitor) checkBsc() {
 					}
 
 					if priceChanged {
-						newPrice := new(big.Int).Div(price, big.NewInt(10000000000000000)).Int64()
+						newPrice := new(big.Int).Div(price, big.NewInt(1000000000000000)).Int64()
 						err := dataTransaction("%s__nodePrice", nil, &newPrice, nil)
 						if err != nil {
 							log.Println(err)

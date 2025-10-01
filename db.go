@@ -15,11 +15,14 @@ func initDb() *gorm.DB {
 
 	dbconf.Logger = logger.Default.LogMode(logger.Error)
 
-	db, err = gorm.Open(sqlite.Open("store.db"), &dbconf)
+	db, err = gorm.Open(sqlite.Open("/persistent/store.db"), &dbconf)
 
 	if err != nil {
-		log.Println(err)
-		logTelegram(err.Error())
+		db, err = gorm.Open(sqlite.Open("store.db"), &dbconf)
+		if err != nil {
+			log.Println(err)
+			logTelegram(err.Error())
+		}
 	}
 
 	if err := db.AutoMigrate(&Transaction{}); err != nil {

@@ -27,7 +27,8 @@ func (m *Monitor) monitorBsc() {
 }
 
 func (m *Monitor) checkBsc() {
-	client, err := ethclient.Dial("wss://bsc-mainnet.core.chainstack.com/916554e2d2df25f9f4dc8a6b35e5735f")
+	// client, err := ethclient.Dial("wss://bsc-mainnet.core.chainstack.com/916554e2d2df25f9f4dc8a6b35e5735f")
+	client, err := ethclient.Dial("wss://ethereum-hoodi.core.chainstack.com/26c6784a0f915a9e597a418b0643ada4")
 	if err != nil {
 		log.Println(err)
 	}
@@ -64,7 +65,7 @@ func (m *Monitor) checkBsc() {
 			log.Println(chbig.String())
 
 			for _, t := range trs {
-				ca := common.HexToAddress(Contract)
+				ca := common.HexToAddress(ContractTestnet)
 				if t.To() != nil && *t.To() == ca {
 					contractABI, err := abi.JSON(strings.NewReader(GetLocalABI("./store.abi")))
 					if err != nil {
@@ -216,6 +217,8 @@ func (m *Monitor) checkBsc() {
 					}
 				}
 			}
+
+			time.Sleep(50 * time.Millisecond)
 		}
 	}
 
